@@ -55,6 +55,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    # get list of keyboard booleans
     keys = pygame.key.get_pressed()
 
     # Update car position based on arrow key inputs
@@ -76,6 +77,7 @@ while running:
         balls.add(Ball)
 
     # Update Sprites
+    balls.draw(screen)
     balls.update()
     # Clear the screen
     screen.fill(water_color)

@@ -1,73 +1,66 @@
-# Example file showing a circle moving on screen
 import pygame
-import gunboat
+from math  import sin, cos, pi
 
-# pygame setup
-pygame.init()
-HEIGHT = 650
-WIDTH = 800
-water_color = ((134, 235, 252))
-# my_ship = pygame.image.load("pirate_pack/ships/ship (1).png")
-# my_ship = pygame.transform.rotate(my_ship, 180)
-pygame.mixer_music.load("Audio/B_music.mp3")
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-clock = pygame.time.Clock()
-running = True
-dt = 0
+class Car(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("pirate_pack/Ships/ship (1).png")
+        self.image = pygame.transform.rotate(self.image, 90)
+        self.rect = self.image.get_rect()
+        self.theta = 0
+        self.velocity = 2 # in pixels per second
+        self.x, self.y = [0,0] # Coordinates of the upper left corner.
+        self.rect.center = [self.x, self.y]
+        self.og_image = self.image
+        # needs image
+        # needs rect
 
-#ship_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-#  Play background Music
-pygame.mixer_music.load("Audio/B_music.mp3")
-pygame.mixer_music.play(-1)
-goodguy = gunboat.AbstractGunboat(screen, 4,4)
+        # need update()
+        def update():
+            # needs to update image and rect based off of new theta
+            self.image = pygame.transform.rotate(self.og_image, self.theta)
+            self.rect = self.image.get_rect()
+            self.rect.center = (self.x, self.y)
 
-while running:
+            deg_rad = pi/180
+            self.x += self.velocity * cos(self.theta * deg_rad)
+            self.y -= self.velocity * sin(self.theta * deg_rad)
+            # needs to calculate new x and y
+            pass
+        # need a draw()
+        def draw(self, screen):
+            screen.blit(self.image, self.rect)
+            print(self.rect)
+        def controls(self):
+            keys = pygame.key.get_pressed
+            if keys[pygame.K_RIGHT]:
+                my_ship.theta -= 5
+            if keys[pygame.K_LEFT]:
+                my_ship.theta += 5  # may want to use a variable
+            if keys[pygame.K_UP]:
+                my_ship.velocity += 1
+            if keys[pygame.K_DOWN]:
+                my_ship.velocity -= 1
+        def check_collision(self, screen):
+            if self.x > self.screen.get_width
 
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        """ In game 
+        # make a car class 
+        my_ship = Car()
+        # in the loop
+        my_car.update()
+        my_ship.blit(screen)"""
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill(water_color)
+        """using keys 
+        keys = pygame.key.get_pressed
+        if keys[pygame.k_RIGHT]:
+            my_ship.theta -=5 
+        if keys[pygame.k_LEFT]:
+            my_ship.theta +=5 # may want to use a variable 
+        if event.key == pygame.k_UP:
+            my_ship.velocity += 1 
+        if event.key == pygame.k_DOWN:
+            my_ship.velocity -= 1
+            """
 
-    #  screen.blit(my_ship, ship_pos)
-    keys = pygame.key.get_pressed()
-    # goodguy.draw(screen)
-    """"if keys[pygame.K_UP]:
-        goodguy.rotate()  # You can choose to rotate when moving forward
-        goodguy.move_forward(300 * dt)
-
-    if keys[pygame.K_DOWN]:
-        goodguy.move_backward(300 * dt)
-
-    if keys[pygame.K_a]:
-        goodguy.rotate(left=True)
-        goodguy.move_left(300 * dt)
-
-    if keys[pygame.K_d]:
-        goodguy.rotate(right=True)
-        goodguy.move_right(300 * dt)"""
-
-    """if keys[pygame.K_UP]:
-        ship_pos.y -= 300 * dt
-    if keys[pygame.K_DOWN]:
-        ship_pos.y += 300 * dt
-    if keys[pygame.K_a]:
-        goodguy.rotate(left = True)
-        ship_pos.x -= 300 * dt
-    if keys[pygame.K_d]:
-        goodguy.rotate(right=True)
-        ship_pos.x += 300 * dt"""
-
-    # flip() the display to put your work on screen
-    pygame.display.flip()
-
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
-    dt = clock.tick(60) / 1000
-
-pygame.quit()

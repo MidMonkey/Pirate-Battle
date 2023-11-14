@@ -1,6 +1,7 @@
 import pygame
 class Ball(pygame.sprite.Sprite):
     def __init__(self, pos, screen):
+        super().__init__()
         self.screen = screen
         self.ball = pygame.image.load("pirate_pack/Ship parts/cannonBall.png")
         self.ball_rect = pygame.Surface.get_rect(self.ball)
