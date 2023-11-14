@@ -28,8 +28,8 @@ class AbstractGunboat():
         screen.blit(rotated_image, new_rect.topleft)
     def draw(self, screen):
         self.blit_rotate_center(screen, self.x, self.y, self.angle)   # add the sprite image as the image.
-    def move_forward(self,speed):
-    def move_backward(self, speed):
+    # def move_forward(self,speed):
+    # def move_backward(self, speed):
 class Gunboat(AbstractGunboat):
     def __init__(self):
         super().__init__(screen, max_vel, rotation_vel)
