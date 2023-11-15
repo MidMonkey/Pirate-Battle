@@ -1,44 +1,84 @@
-import pygame.sprite
-from math import pi, cos, sin, atan2, atan
+import pygame
+import sys
 
+def keep_sprite_on_screen(sprite, screen_width, screen_height):
+    """
+    Adjusts the sprite's position to keep it within the screen boundaries.
 
-class AbstractGunboat():
-    image = pygame.image.load("pirate_pack/ships/ship (1).png")
-    image = pygame.transform.rotate(image, 180)
-    def __init__(self,screen, max_vel, rotation_vel):
-        self.max_vel = max_vel
-        self.vel = 0
-        self.rotation_vel = rotation_vel
-        self.angle = 5
-        self.screen = screen
-        self.x, self.y  = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+    Parameters:
+    - sprite: A Pygame sprite object with 'rect' attribute.
+    - screen_width: Width of the screen.
+    - screen_height: Height of the screen.
+    """
+    sprite_rect = sprite.rect
 
-    def rotate(self, left=False, right=False):
-        if left:
-            self.angle += self.rotation_vel
-        elif right:
-            self.angle -= self.rotation_vel
-    def blit_rotate_center(self, screen, top_left, angle):
-        rotated_image = pygame.transform.rotate(self.image, angle)
-        """This function will rotate the image about the top left corner which is not good because it will spin the rect and distort
-        the inner image"""
-        new_rect = rotated_image.get_rect(center=self.image.get_rect(topleft=top_left).center)
-        """this should fix the problem above
-        by making the image rotate about its center"""
-        screen.blit(rotated_image, new_rect.topleft)
-    def draw(self, screen):
-        self.blit_rotate_center(screen, self.x, self.y, self.angle)   # add the sprite image as the image.
-    # def move_forward(self,speed):
-    # def move_backward(self, speed):
-class Gunboat(AbstractGunboat):
+    # Ensure the sprite stays within the left boundary
+    if sprite_rect.left < 0:
+        sprite_rect.left = 0
+
+    # Ensure the sprite stays within the right boundary
+    if sprite_rect.right > screen_width:
+        sprite_rect.right = screen_width
+
+    # Ensure the sprite stays within the top boundary
+    if sprite_rect.top < 0:
+        sprite_rect.top = 0
+
+    # Ensure the sprite stays within the bottom boundary
+    if sprite_rect.bottom > screen_height:
+        sprite_rect.bottom = screen_height
+
+# Define your sprite class
+class MySprite(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__(screen, max_vel, rotation_vel)
+        super().__init__()
+        self.image = pygame.Surface((50, 50))  # Replace with your sprite image
+        self.image.fill((255, 0, 0))  # Replace with your desired color
+        self.rect = self.image.get_rect()
+        self.rect.x = 100
+        self.rect.y = 100
 
+# Initialize Pygame
+pygame.init()
 
+# Set up the screen
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Move Sprite with Arrow Keys")
 
-    def draw(self, screen, images):
-        for img in images:
-            screen.blit(img, self.ship_pos)
-        self.image.draw()
-        pygame.display.update(new_rect)
+# Create a sprite
+my_sprite = MySprite()
 
+# Main game loop
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    # Handle arrow key events
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        my_sprite.rect.x -= 5
+    if keys[pygame.K_RIGHT]:
+        my_sprite.rect.x += 5
+    if keys[pygame.K_UP]:
+        my_sprite.rect.y -= 5
+    if keys[pygame.K_DOWN]:
+        my_sprite.rect.y += 5
+
+    # Call the function to keep the sprite on the screen
+    keep_sprite_on_screen(my_sprite, screen_width, screen_height)
+
+    # Clear the screen
+    screen.fill((255, 255, 255))
+
+    # Draw the sprite on the screen
+    screen.blit(my_sprite.image, my_sprite.rect.topleft)
+
+    # Update the display
+    pygame.display.flip()
+
+    # Set the frames per second (FPS)
+    pygame.time.Clock().tick(60)
