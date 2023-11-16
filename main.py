@@ -21,10 +21,6 @@ water_color = ((134, 235, 252))
 # Create the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Pirate Battle")
-ship_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-my_sprite = pygame.image.load("pirate_pack/ships/ship (1).png")
-sprite_pos = pygame.Vector2(my_sprite.get_width() / 2, my_sprite.get_height() / 2)
-fix = ship_pos - sprite_pos
 # Load the car image
 
 
@@ -39,6 +35,7 @@ pygame.mixer_music.play(-1)
 
 my_ship = Ship(screen)
 
+# init cannonballs
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

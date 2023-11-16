@@ -1,39 +1,73 @@
 import pygame
-from math import cos, sin, pi, atan2
-class Gunboat(pygame.sprite.Sprite):
-    def __init__(self, screen, theta = 0,speed = 0):
-        super().__init__()
-        self.screen = screen
-        self.my_ship = pygame.image.load("pirate_pack/ships/ship (1).png")
-        self.my_ship = pygame.transform.rotate(self.my_ship, 180)
-        self.ship_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)  # find the center of the screen
-        self.center_pos = pygame.Vector2(self.my_ship.get_width() / 2, self.my_ship.get_height() / 2)  # find the center of the sprite
-        self.x, self.y = self.ship_pos - self.center_pos  # making the center of hte ship the same as the center of the screen
-        self.theta = theta
-        self.speed = speed
+import sys
 
-    def update(self):
+# Initialize Pygame
+pygame.init()
 
-        # move the ship with it's speed
-        self.x = self.x + self.speed * cos(self.theta)
-        self.y = self.y + self.speed * sin(self.theta)
+# Set up display
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Car Shooting Game")
 
-        # update the rectangle
-        # self.rect.x = self.x
-        # self.rect.y = self.y
-    def reverse_update(self):
+# Colors
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
 
-        # move the ship with it's speed
-        self.x = self.x - self.speed * cos(self.theta)
-        self.y = self.y - self.speed * sin(self.theta)
+# Car properties
+car_width = 50
+car_height = 80
+car_x = width // 2 - car_width // 2
+car_y = height - car_height - 10
+car_speed = 5
 
-        # update the rectangle
-        # self.rect.x = self.x
-        # self.rect.y = self.y
-    def move_ship(self):
-        new_ship = pygame.transform.rotate(self.my_ship, self.theta)
+# Projectile properties
+projectile_width = 5
+projectile_height = 15
+projectile_speed = 7
+projectiles = []
 
+# Clock to control the frame rate
+clock = pygame.time.Clock()
 
+# Game loop
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
+        # Check for key presses
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                car_x * car_speed
+            elif event.key == pygame.K_RIGHT:
+                car_x * -1 * car_speed
+            elif event.key == pygame.K_SPACE:
+                # Shoot a projectile
+                projectile_x = car_x + car_width // 2 - projectile_width // 2
+                projectile_y = car_y
+                projectiles.append([projectile_x, projectile_y])
 
+    # Move projectiles
+    for projectile in projectiles:
+        projectile[1] -= projectile_speed
 
+    # Remove projectiles that are off-screen
+    projectiles = [projectile for projectile in projectiles if projectile[1] > 0]
+
+    # Update display
+    screen.fill(white)
+
+    # Draw car
+    pygame.draw.rect(screen, black, [car_x, car_y, car_width, car_height])
+
+    # Draw projectiles
+    for projectile in projectiles:
+        pygame.draw.rect(screen, red, [projectile[0], projectile[1], projectile_width, projectile_height])
+
+    # Update display
+    pygame.display.flip()
+
+    # Set the frame rate
+    clock.tick(30)
