@@ -24,12 +24,12 @@ class Ship(pygame.sprite.Sprite):
         self.screenwidth = self.screen.get_width()
         self.screenheight = self.screen.get_height()
 
-        # init cannonball variables
+        """ # init cannonball variables
         self.ball = pygame.image.load("pirate_pack/Ship parts/cannonBall.png")
         self.ballpos = self.rect.center
         self.ball.rect = self.ball.get_rect()
         self.ball.rect.x = self.ball.get_width()
-        self.ball.rect.y = self.ball.get_height()
+        self.ball.rect.y = self.ball.get_height()"""
     def update(self):
         self.update_controls()
         self.ship_update()
@@ -65,9 +65,9 @@ class Ship(pygame.sprite.Sprite):
         elif keys[pygame.K_LEFT]:
             self.theta += 3  # may want to use a variable
         elif keys[pygame.K_UP]:
-            self.velocity = 5
+            self.velocity = 2
         elif keys[pygame.K_DOWN]:
-            self.velocity = -5
+            self.velocity = -2
         elif keys[pygame.K_k]:
             self.shoot(self.screen)
         else:
