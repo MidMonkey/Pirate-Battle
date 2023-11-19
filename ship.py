@@ -1,13 +1,13 @@
 import pygame
-import sys
-from math  import sin, cos, pi
+from math import sin, cos, pi
+from cannonball import Cannonball
 
 
 class Ship(pygame.sprite.Sprite):
-    def __init__(self,screen):
+    def __init__(self,screen, theta, velocity):
         super().__init__()
         #  init sprite variables
-        self.image = pygame.image.load("pirate_pack/ships/ship (1).png")
+        self.image = pygame.image.load("pirate_pack/ships/ship (5).png")
         self.image = pygame.transform.scale(self.image, (50, 80))
         self.image = pygame.transform.rotate(self.image, 90)
         self.rect = self.image.get_rect()
@@ -24,19 +24,22 @@ class Ship(pygame.sprite.Sprite):
         self.screenwidth = self.screen.get_width()
         self.screenheight = self.screen.get_height()
 
-        """ # init cannonball variables
-        self.ball = pygame.image.load("pirate_pack/Ship parts/cannonBall.png")
-        self.ballpos = self.rect.center
-        self.ball.rect = self.ball.get_rect()
-        self.ball.rect.x = self.ball.get_width()
-        self.ball.rect.y = self.ball.get_height()"""
-    def update(self):
-        self.update_controls()
-        self.ship_update()
-        self.update_balls()
-    def ship_update(self):
+        # cannonballs
+        self.ball = Cannonball(self.screen, self.x, self.y, self.theta)
+
+        self.cannonball_group = pygame.sprite.Group()
+
+
+    def update(self, velocity, theta):
+        #self.update_controls()
+        self.ship_update(velocity, theta)
+
+
+    def ship_update(self, velocity, theta):
         self.border(self.x, self.y)
         # needs to update image and rect based off of new theta
+        self.velocity = velocity
+        self.theta = theta
         self.image = pygame.transform.rotate(self.og_image, self.theta)
         self.rect = self.image.get_rect()
 
@@ -50,15 +53,9 @@ class Ship(pygame.sprite.Sprite):
         # update the rectangle
 
         self.rect.center = (self.x, self.y)
-        self.ballpos = self.rect.center
-    def update_balls(self):
-        # needs to shoot off a cannonball at a perpendicular to the ships direction.
-        ballx, bally = self.ballpos
-        deg_rad = pi / 180
-        ball_theta = self.theta + 90
-        ballx += self.velocity * cos(ball_theta * deg_rad)
-        bally -= self.velocity * sin(ball_theta * deg_rad)
-    def update_controls(self):
+
+    """def update_controls(self):
+        self.ball = Cannonball(self.screen, self.x, self.y, self.theta)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
             self.theta -= 3
@@ -69,10 +66,12 @@ class Ship(pygame.sprite.Sprite):
         elif keys[pygame.K_DOWN]:
             self.velocity = -2
         elif keys[pygame.K_k]:
-            self.shoot(self.screen)
+            self.cannonball_group.add(self.ball)
+            print(self.cannonball_group)
         else:
             self.theta = self.theta
-            self.velocity = 0
+            self.velocity = 0"""
+
 
         # need a draw()
     def draw(self, screen):
@@ -86,9 +85,11 @@ class Ship(pygame.sprite.Sprite):
             y=0
         elif y > self.screenheight - self.rect.y:
             y = self.screenheight - self.rect.y
-    def shoot(self, screen):
-        ball_group = []
-        screen.blit(self.ball, self.ballpos)
+    def location(self):
+        return(self.x, self.y)
+    def shoot(self):
+        return Cannonball(self.screen, self.x, self.y, self.theta)
+
 
 
 
