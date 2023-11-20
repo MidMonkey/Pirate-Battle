@@ -1,13 +1,16 @@
+import random
+
 import pygame
 from math import sin, cos, pi
-from cannonball import Cannonball
+
 
 
 class Ship(pygame.sprite.Sprite):
-    def __init__(self,screen, theta, velocity):
+    def __init__(self,screen, theta, velocity,path):
         super().__init__()
         #  init sprite variables
-        self.image = pygame.image.load("pirate_pack/ships/ship (5).png")
+        self.path = path
+        self.image = pygame.image.load(path)
         self.image = pygame.transform.scale(self.image, (50, 80))
         self.image = pygame.transform.rotate(self.image, 90)
         self.rect = self.image.get_rect()
@@ -18,21 +21,26 @@ class Ship(pygame.sprite.Sprite):
         self.x, self.y = [200,200] # Coordinates of the upper left corner.
         self.rect.center = [self.x, self.y]
         self.og_image = self.image
-
         # init screen variables
         self.screen = screen
         self.screenwidth = self.screen.get_width()
         self.screenheight = self.screen.get_height()
+        # set a random postions. This is especially usefull in the multiplayer mode.
+        self.x = random.randrange(0, self.screenwidth)
+        self.y = random.randrange(0, self.screenheight)
 
-        # cannonballs
-        self.ball = Cannonball(self.screen, self.x, self.y, self.theta)
+        # setup health variables
+        self.life = 100
+        self.hit = 0
 
-        self.cannonball_group = pygame.sprite.Group()
 
 
-    def update(self, velocity, theta):
+
+    def update(self, velocity, theta,me, enemy_cannonball_group,):
         #self.update_controls()
         self.ship_update(velocity, theta)
+        self.check_hits(me, enemy_cannonball_group)
+        # self.update_looks()
 
 
     def ship_update(self, velocity, theta):
@@ -54,28 +62,11 @@ class Ship(pygame.sprite.Sprite):
 
         self.rect.center = (self.x, self.y)
 
-    """def update_controls(self):
-        self.ball = Cannonball(self.screen, self.x, self.y, self.theta)
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_RIGHT]:
-            self.theta -= 3
-        elif keys[pygame.K_LEFT]:
-            self.theta += 3  # may want to use a variable
-        elif keys[pygame.K_UP]:
-            self.velocity = 2
-        elif keys[pygame.K_DOWN]:
-            self.velocity = -2
-        elif keys[pygame.K_k]:
-            self.cannonball_group.add(self.ball)
-            print(self.cannonball_group)
-        else:
-            self.theta = self.theta
-            self.velocity = 0"""
 
-
-        # need a draw()
     def draw(self, screen):
         screen.blit(self.image,self.rect)
+
+    # define the edges of the screen and keep the ship from going off of the screen
     def border(self, x, y):
         if x < 0:
             x = 0
@@ -87,8 +78,47 @@ class Ship(pygame.sprite.Sprite):
             y = self.screenheight - self.rect.y
     def location(self):
         return(self.x, self.y)
-    def shoot(self):
-        return Cannonball(self.screen, self.x, self.y, self.theta)
+    def check_hits(self, me, enemy_cannonball_group):
+        if pygame.sprite.spritecollideany(me, enemy_cannonball_group):
+            self.take_damage()
+            print("im hit")
+
+
+
+    def take_damage(self):
+        self.life = self.life - 10
+        self.life = self.life
+        print(self.life)
+
+    def update_looks(self):
+        if self.path == 'pirate_pack/ships/ship (5).png':
+            if 100 >= self.life > 60:
+                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (5).png')
+                self.image = pygame.transform.scale(self.image, (50, 80))
+            elif 60 >= self.life > 30:
+                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (11).png')
+                self.image = pygame.transform.scale(self.image, (50, 80))
+            elif 30 >= self.life > 1:
+                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (17).png')
+                self.image = pygame.transform.scale(self.image, (50, 80))
+            elif self.life <= 0:
+                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (23).png')
+                self.image = pygame.transform.scale(self.image, (50, 80))
+        elif self.path == 'pirate_pack/ships/ship (3).png':
+            if 100 >= self.life > 60:
+                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (3).png')
+                self.image = pygame.transform.scale(self.image, (50, 80))
+            elif 60 >= self.life > 30:
+                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (9).png')
+                self.image = pygame.transform.scale(self.image, (50, 80))
+            elif 30 >= self.life > 1:
+                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (15).png')
+                self.image = pygame.transform.scale(self.image, (50, 80))
+            elif self.life <= 0:
+                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (21).png')
+                self.image = pygame.transform.scale(self.image, (50, 80))
+                self.velocity = self.velocity * 0
+
 
 
 
