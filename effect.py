@@ -16,6 +16,10 @@ class Effects():
     def music(self):
         self.music = pygame.mixer_music.load("Audio/B_music.mp3")
         pygame.mixer_music.play(-1)
+    def music2(self):
+        self.music = pygame.mixer_music.load("Audio/ship_ambience.wav")
+        pygame.mixer_music.play(-1)
+
     def cannon_boom(self):
         esound = pygame.mixer.Sound('Audio/cannonball-89596.mp3')
         esound.play()
