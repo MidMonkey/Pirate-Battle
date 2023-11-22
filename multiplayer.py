@@ -3,6 +3,7 @@ import sys
 from ship import Ship
 from effect import Effects
 from cannonball import Cannonball
+from control import Controls
 
 
 # Initialize Pygame
@@ -26,19 +27,21 @@ clock = pygame.time.Clock()
 running = True
 
 # init classes
-my_ship = Ship(screen, theta1, velocity1, 'pirate_pack/ships/ship (5).png')
+
 your_ship = Ship(screen, theta2, velocity2, 'pirate_pack/ships/ship (3).png')
+my_ship = Ship(screen, theta1, velocity1,'pirate_pack/ships/ship (5).png')
+"""my_ship_controls = Controls(screen,velocity1, theta1)
+your_ship_controls = Controls(screen, velocity2, theta2)"""
 my_game = Effects(screen)
 ball_group = pygame.sprite.Group()
 your_ball_group = pygame.sprite.Group()
-my_ship_group = pygame.sprite.Group()
-your_ship_group = pygame.sprite.Group()
+#  my_ship_group = pygame.sprite.Group()
+#  your_ship_group = pygame.sprite.Group()
 
 
 # Plays the game soundtrack
-#my_game.music()
-pygame.mixer_music.load("Audio/B_music.mp3")
-pygame.mixer_music.play(-1)
+my_game.music()
+
 
 while running:
 
@@ -46,6 +49,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     keys = pygame.key.get_pressed()
+    #my_ship_controls.player1_controls(keys)
+    #your_ship_controls.player2_controls(keys)
     #controls for player 1
     if keys[pygame.K_RIGHT]:
         theta1 -= 3
@@ -87,7 +92,7 @@ while running:
         velocity2 = 2
     elif keys[pygame.K_s]:
         velocity2 = -2
-    elif keys[pygame.K_q]:
+    elif keys[pygame.K_h]:
         if not sshots_fired:
             kill_theta2 = theta2 - 90
             x2 = your_ship.rect.centerx
@@ -95,7 +100,7 @@ while running:
             your_ball_group.add(Cannonball(screen, x2, y2, kill_theta2))
             my_game.cannon_boom()
             sshots_fired = True
-    elif keys[pygame.K_e]:
+    elif keys[pygame.K_g]:
         if not sshots_fired:
             kill_theta2 = theta2 + 90
             x2 = your_ship.rect.centerx
@@ -114,14 +119,17 @@ while running:
 
     # tile background
     my_game.background()
-    # blit first sprite
+    # update both cannonball groups before updating ships.
+    # update first ball group
     ball_group.update()
     ball_group.draw(screen)
-    my_ship.update(velocity1, theta1, my_ship, your_ball_group)
-    my_ship.draw(screen)
-    # blit second sprite
+    # update second ball group
     your_ball_group.update()
     your_ball_group.draw(screen)
+    # update first sprite
+    my_ship.update(velocity1, theta1, my_ship, your_ball_group)
+    my_ship.draw(screen)
+    # update second sprite
     your_ship.update(velocity2, theta2, your_ship, ball_group)
     your_ship.draw(screen)
 

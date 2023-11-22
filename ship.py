@@ -1,18 +1,16 @@
 import random
-
+# from ship_looks import update_looks
 import pygame
 from math import sin, cos, pi
-
-
-
 class Ship(pygame.sprite.Sprite):
-    def __init__(self,screen, theta, velocity,path):
+    def __init__(self,screen, theta, velocity, path):
         super().__init__()
         #  init sprite variables
         self.path = path
-        self.image = pygame.image.load(path)
-        self.image = pygame.transform.scale(self.image, (50, 80))
-        self.image = pygame.transform.rotate(self.image, 90)
+        self.image = pygame.image.load(self.path)
+        self.og_image = pygame.image.load(self.path)
+        #self.og_image = pygame.transform.scale(self.image, (20, 50))
+        #self.og_image = pygame.transform.rotate(self.image, 90)
         self.rect = self.image.get_rect()
         self.rect.x = self.image.get_width()
         self.rect.y = self.image.get_height()
@@ -20,7 +18,6 @@ class Ship(pygame.sprite.Sprite):
         self.velocity = 0 # in pixels per second
         self.x, self.y = [200,200] # Coordinates of the upper left corner.
         self.rect.center = [self.x, self.y]
-        self.og_image = self.image
         # init screen variables
         self.screen = screen
         self.screenwidth = self.screen.get_width()
@@ -36,11 +33,12 @@ class Ship(pygame.sprite.Sprite):
 
 
 
-    def update(self, velocity, theta,me, enemy_cannonball_group,):
+    def update(self, velocity, theta,me, enemy_cannonball_group):
         #self.update_controls()
+        self.update_looks(velocity, theta)
         self.ship_update(velocity, theta)
         self.check_hits(me, enemy_cannonball_group)
-        # self.update_looks()
+
 
 
     def ship_update(self, velocity, theta):
@@ -81,45 +79,36 @@ class Ship(pygame.sprite.Sprite):
     def check_hits(self, me, enemy_cannonball_group):
         if pygame.sprite.spritecollideany(me, enemy_cannonball_group):
             self.take_damage()
-            print("im hit")
-
-
 
     def take_damage(self):
         self.life = self.life - 10
         self.life = self.life
         print(self.life)
 
-    def update_looks(self):
+
+    def update_looks(self, velocity, theta):
         if self.path == 'pirate_pack/ships/ship (5).png':
             if 100 >= self.life > 60:
-                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (5).png')
-                self.image = pygame.transform.scale(self.image, (50, 80))
+                self.image = pygame.image.load('pirate_pack/ships/ship (5).png')
             elif 60 >= self.life > 30:
-                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (11).png')
-                self.image = pygame.transform.scale(self.image, (50, 80))
+                self.image = pygame.image.load('pirate_pack/ships/ship (11).png')
             elif 30 >= self.life > 1:
-                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (17).png')
-                self.image = pygame.transform.scale(self.image, (50, 80))
+                self.image = pygame.image.load('pirate_pack/ships/ship (17).png')
             elif self.life <= 0:
-                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (23).png')
-                self.image = pygame.transform.scale(self.image, (50, 80))
+                self.image = pygame.image.load('pirate_pack/ships/ship (23).png')
         elif self.path == 'pirate_pack/ships/ship (3).png':
             if 100 >= self.life > 60:
-                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (3).png')
-                self.image = pygame.transform.scale(self.image, (50, 80))
+                self.image = pygame.image.load('pirate_pack/ships/ship (3).png')
             elif 60 >= self.life > 30:
-                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (9).png')
-                self.image = pygame.transform.scale(self.image, (50, 80))
+                self.image = pygame.image.load('pirate_pack/ships/ship (9).png')
             elif 30 >= self.life > 1:
-                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (15).png')
-                self.image = pygame.transform.scale(self.image, (50, 80))
+                self.image = pygame.image.load('pirate_pack/ships/ship (15).png')
             elif self.life <= 0:
-                self.image = self.image = pygame.image.load('pirate_pack/ships/ship (21).png')
-                self.image = pygame.transform.scale(self.image, (50, 80))
-                self.velocity = self.velocity * 0
+                self.image = pygame.image.load('pirate_pack/ships/ship (21).png')
 
-
-
-
+        # Scale and rotate the image
+        self.og_image = pygame.transform.scale(self.image, (40, 80))
+        self.og_image = pygame.transform.rotate(self.og_image, 90)
+        # Update the ship
+        self.ship_update(velocity, theta)
 

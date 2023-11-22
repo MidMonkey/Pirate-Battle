@@ -1,45 +1,32 @@
-import pygame
-import sys
 
-# Initialize Pygame
-pygame.init()
+ships = {
+        'blue_ship': {
+            (60, 100): 'pirate_pack/ships/ship (5).png',
+            (30, 59): 'pirate_pack/ships/ship (11).png',
+            (1, 29): 'pirate_pack/ships/ship (17).png',
+            0: 'pirate_pack/ships/ship (23).png'
+        },
+        'red_ship': {
+            (60, 100): 'pirate_pack/ships/ship (5).png',
+            (30, 59): 'pirate_pack/ships/ship (11).png',
+            (1, 29): 'pirate_pack/ships/ship (17).png',
+            0: 'pirate_pack/ships/ship (23).png'
+        }
+    }
 
-# Set up display
-width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Game Score Example")
+def get_ship_image(ship_color, life):
+    ship_states = ships.get(ship_color, {})
 
-# Set up colors
-white = (255, 255, 255)
-black = (0, 0, 0)
+    for state_range, image_path in ship_states.items():
+        state_min, state_max = state_range
+        if state_min <= life <= state_max:
+            return image_path
 
-# Set up font
-font = pygame.font.Font(None, 36)
+    # If no matching state is found, return a default image path or handle as needed
+    return 'default_image_path.png'
 
-# Initial score
-score = 0
-
-# Main game loop
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-    # Update score (this could be based on game logic)
-    score += 1
-
-    # Clear the screen
-    screen.fill(black)
-
-    # Render the score text
-    score_text = font.render("Score: {}".format(score), True, white)
-
-    # Draw the score text in the upper left corner
-    screen.blit(score_text, (10, 10))
-
-    # Update the display
-    pygame.display.flip()
-
-    # Control the frame rate (optional)
-    pygame.time.Clock().tick(60)
+# Example usage:
+ship_color = 'blue_ship'
+life_value = 40
+image_path = get_ship_image(ship_color, life_value)
+print(f"The corresponding image path for {ship_color} and life {life_value} is: {image_path}")
