@@ -10,6 +10,13 @@ pygame.init()
 width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Main Menu")
+image_path = 'pirate_pack/Logos/logo2..png'
+logo = pygame.image.load(image_path)
+logo = pygame.transform.scale(logo, (300, 300))
+"""image_path2 = 'pirate_pack/Logos/wheel.png'
+logo2 = pygame.image.load(image_path2)
+logo12 = pygame.transform.scale(logo2, (300, 300))"""
+
 
 # Set up colors
 white = (255, 255, 255)
@@ -24,10 +31,10 @@ button_width, button_height = 200, 50
 button_margin = 20
 
 # Button 1
-button1_rect = pygame.Rect((width - button_width) // 2, height // 2 - button_height - button_margin, button_width, button_height)
+button1_rect = pygame.Rect((width - button_width) // 2, height // 1.15 - button_height - button_margin, button_width, button_height)
 
 # Button 2
-button2_rect = pygame.Rect((width - button_width) // 2, height // 2 + button_margin, button_width, button_height)
+button2_rect = pygame.Rect((width - button_width) // 2, height // 1.15 + button_margin, button_width, button_height)
 
 two_player = PirateBattle()
 
@@ -54,9 +61,13 @@ while True:
     setting.background()
 
     # Draw title
-    title_text = font.render("Pirate Battle", True, green)
-    title_rect = title_text.get_rect(center=(width // 2, height // 4))
-    screen.blit(title_text, title_rect)
+    title_rect = logo.get_rect(center=(width // 2, height // 4+75))
+    screen.blit(logo, title_rect)
+
+    """# draw side images
+    title_rect2 = logo2.get_rect(center=(width // 4+75 , height // 2))
+    screen.blit(logo2, title_rect2)"""
+
 
     # Draw buttons
     pygame.draw.rect(screen, dblue, button1_rect)

@@ -14,7 +14,7 @@ class Ship(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = self.image.get_width()
         self.rect.y = self.image.get_height()
-        self.theta = 0
+        self.theta = random.randrange(0,360)
         self.velocity = 0 # in pixels per second
         self.x, self.y = [200,200] # Coordinates of the upper left corner.
         self.rect.center = [self.x, self.y]
@@ -55,6 +55,11 @@ class Ship(pygame.sprite.Sprite):
 
         self.x = max(0, min(self.x, self.screenwidth))
         self.y = max(0, min(self.y, self.screenheight))
+
+        if self.x == max(0, min(self.x, self.screenwidth)):
+            self.theta = self.theta
+        if self.y == max(0, min(self.y, self.screenheight)):
+            self.theta = self.theta
         # needs to calculate new x and y
         # update the rectangle
 
@@ -68,12 +73,16 @@ class Ship(pygame.sprite.Sprite):
     def border(self, x, y):
         if x < 0:
             x = 0
+
         elif x > self.screenwidth - self.rect.x:
             x = self.screenwidth - self.rect.x
+
         elif y < 0:
             y=0
+
         elif y > self.screenheight - self.rect.y:
             y = self.screenheight - self.rect.y
+
     def location(self):
         return(self.x, self.y)
     def check_hits(self, me, enemy_cannonball_group):
