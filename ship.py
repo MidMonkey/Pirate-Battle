@@ -90,7 +90,7 @@ class Ship(pygame.sprite.Sprite):
             self.take_damage()
 
     def take_damage(self):
-        self.life = self.life - 10
+        self.life = self.life - 5
         self.life = self.life
         print(self.life)
 

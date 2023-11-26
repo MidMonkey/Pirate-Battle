@@ -1,6 +1,7 @@
 import pygame
 import sys
 from multiplayerclass import PirateBattle
+from singleplayerclass import SinglePlayer
 from effect import Effects
 
 # Initialize Pygame
@@ -37,6 +38,7 @@ button1_rect = pygame.Rect((width - button_width) // 2, height // 1.15 - button_
 button2_rect = pygame.Rect((width - button_width) // 2, height // 1.15 + button_margin, button_width, button_height)
 
 two_player = PirateBattle()
+one_player = SinglePlayer()
 
 setting = Effects(screen)
 setting.music2()
@@ -54,6 +56,7 @@ while True:
                     print("Button 1 clicked - Game 1")
                     # Add code to start Game 1 here
                 elif button2_rect.collidepoint(event.pos):
+                    one_player.run()
                     print("Button 2 clicked - Game 2")
                     # Add code to start Game 2 here
 
@@ -76,7 +79,7 @@ while True:
     screen.blit(button1_text, button1_text_rect)
 
     pygame.draw.rect(screen, dblue, button2_rect)
-    button2_text = font.render("Game 2", True, green)
+    button2_text = font.render("Singleplayer", True, green)
     button2_text_rect = button2_text.get_rect(center=button2_rect.center)
     screen.blit(button2_text, button2_text_rect)
 

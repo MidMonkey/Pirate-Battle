@@ -79,7 +79,8 @@ while running:
         theta1 = theta1
         velocity1 = 0
         shots_fired = 0
-
+    # attack playercontroled ship if it is within a certain radius.
+    npcs.attack(npcs, my_ship, npc_ball_group)
     # tile background
     my_game.background()
     # update both cannonball groups before updating ships.
@@ -92,16 +93,16 @@ while running:
     # update first sprite
     my_ship.update(velocity1, theta1, my_ship, npc_ball_group)
     my_ship.draw(screen)
-    npcs.npc_update()
+    npcs.npc_update(npcs, ball_group)
     npcs.draw(screen)
 
     # kill cannonball sprites after first contact.
     collisions = pygame.sprite.spritecollide(my_ship, npc_ball_group, True)
     for i in collisions:
         i.kill()
-
-
-
+    collisions2 = pygame.sprite.spritecollide(npcs, ball_group, True)
+    for i in collisions2:
+        i.kill()
 
     # Update the display
     pygame.display.flip()
