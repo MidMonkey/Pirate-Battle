@@ -1,11 +1,11 @@
 import random
 import pygame
 from ship import Ship
-from math import sin, cos, pi, sqrt
+from math import sin, cos, pi, sqrt, atan2
 from cannonball import Cannonball
 from effect import Effects
 class Npc(Ship):
-    def __init__(self, screen, path):
+    def __init__(self, screen, path, enemy_ship):
         # Set default values for velocity and theta
         # Call the constructor of the parent class (Ship)
         self.path = path
@@ -15,6 +15,7 @@ class Npc(Ship):
         self.theta = random.randrange(0, 360)
         self.attack_cooldown = 200
         self.last_attack_time = 0
+        self.enemy_ship = enemy_ship
         super().__init__(screen, self.theta, self.velocity, self.path)
         self.screenwidth = self.screen.get_width()
         self.screenheight = self.screen.get_height()
@@ -52,18 +53,22 @@ class Npc(Ship):
             coord2 = sprite2.rect.center
             x2, y2 = coord2
             distance = sqrt((x2-x1)**2+(y2-y1)**2)
-            kill_theta1 = self.theta + 5
-            kill_theta2 = self.theta + 220
+            angle_radians = atan2(y2 - y1, x2 - x1)
+            print(angle_radians)
+            kill_theta = self.theta - 49
+            kill_theta1 = kill_theta - 90
+            kill_theta2 = kill_theta + 90
             x3 = self.rect.centerx
             y3 = self.rect.centery
             self.gun_timer = pygame.time.get_ticks()
             # if pygame.time.get_ticks() - self.gun_timer >= 100:
             current_time = pygame.time.get_ticks()
+            print()
             if current_time - self.last_attack_time >= self.attack_cooldown:
                 if distance <= self.kill_radius:
                     print('attack')
-                    ball_group.add(Cannonball(self.screen, x3, y3, kill_theta1))
                     ball_group.add(Cannonball(self.screen, x3, y3, kill_theta2))
+                    ball_group.add(Cannonball(self.screen, x3, y3, kill_theta1))
                     self.my_game.cannon_boom()
                     self.last_attack_time = current_time
                     self.npc_ball_group.draw(self.screen)

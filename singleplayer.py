@@ -29,7 +29,7 @@ running = True
 
 # init classes
 my_ship = Ship(screen, theta1, velocity1,'pirate_pack/ships/ship (5).png')
-npcs = Npc(screen, 'pirate_pack/ships/ship (4).png')
+npcs = Npc(screen, 'pirate_pack/ships/ship (4).png', my_ship)
 my_game = Effects(screen)
 ball_group = pygame.sprite.Group()
 npc_ball_group = pygame.sprite.Group()

@@ -26,6 +26,22 @@ class Effects():
         """I had a bug where adding sound effects caused my background music to restart. Jay Barreto showed me that
         there were different ways to initialized the music so that this would not happer"""
 
+    def display_score(self, screen, score):
+        # Set up the font
+        font = pygame.font.Font(None, 36)
+
+        # Render the text
+        text = font.render(f"Score: {score}", True, (255, 255, 255))
+
+        # Get the text rect and set its position to the top left corner
+        text_rect = text.get_rect()
+        text_rect.topleft = (50, 10)
+
+        # Draw the text on the screen
+        screen.blit(text, text_rect)
+
+        # Update the display
+        pygame.display.flip()
 
 
 

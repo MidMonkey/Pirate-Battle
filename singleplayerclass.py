@@ -21,6 +21,7 @@ class SinglePlayer:
         self.theta2 = 0
         self.shots_fired = 0
         self.sshots_fired = 0
+        self.score = 0
 
         # Create the screen
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
@@ -30,7 +31,7 @@ class SinglePlayer:
 
         # Init classes
         self.my_ship = Ship(self.screen, self.theta1, self.velocity1, 'pirate_pack/ships/ship (5).png')
-        self.npcs = Npc(self.screen, 'pirate_pack/ships/ship (4).png')
+        self.npcs = Npc(self.screen, 'pirate_pack/ships/ship (4).png', self.my_ship)
         self.my_game = Effects(self.screen)
         self.ball_group = pygame.sprite.Group()
         self.npc_ball_group = pygame.sprite.Group()
@@ -75,9 +76,11 @@ class SinglePlayer:
             self.velocity1 = 0
             self.shots_fired = 0
 
+
     def update_game(self):
         # Attack player-controlled ship if it is within a certain radius.
         self.npcs.attack(self.npcs, self.my_ship, self.npc_ball_group)
+
 
         # Tile background
         self.my_game.background()
@@ -102,9 +105,14 @@ class SinglePlayer:
         collisions = pygame.sprite.spritecollide(self.my_ship, self.npc_ball_group, True)
         for i in collisions:
             i.kill()
+            self.score -=3
         collisions2 = pygame.sprite.spritecollide(self.npcs, self.ball_group, True)
         for i in collisions2:
             i.kill()
+            self.score += 3
+
+        # displays game score
+        self.my_game.display_score(self.screen, self.score)
 
         # Update the display
         pygame.display.flip()
@@ -122,6 +130,4 @@ class SinglePlayer:
         pygame.quit()
         sys.exit()
 
-if __name__ == "__main__":
-    game = PirateBattleGame()
-    game.run()
+
