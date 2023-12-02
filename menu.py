@@ -5,6 +5,7 @@ from singleplayerclass import SinglePlayer
 from effect import Effects
 
 # Initialize Pygame
+print()
 pygame.init()
 
 # Set up display

@@ -36,8 +36,6 @@ class SinglePlayer:
         self.ball_group = pygame.sprite.Group()
         self.npc_ball_group = pygame.sprite.Group()
 
-        # Plays the game soundtrack
-        self.my_game.music()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -52,9 +50,9 @@ class SinglePlayer:
         elif keys[pygame.K_LEFT]:
             self.theta1 += 3
         elif keys[pygame.K_UP]:
-            self.velocity1 = 2
+            self.velocity1 = 1.5
         elif keys[pygame.K_DOWN]:
-            self.velocity1 = -2
+            self.velocity1 = -1.5
         elif keys[pygame.K_k]:
             if not self.shots_fired:
                 kill_theta = self.theta1 - 90
@@ -112,7 +110,7 @@ class SinglePlayer:
             self.score += 3
 
         # displays game score
-        self.my_game.display_score(self.screen, self.score)
+        self.my_game.display_score1(self.screen, self.score)
 
         # Update the display
         pygame.display.flip()
@@ -121,6 +119,7 @@ class SinglePlayer:
         self.clock.tick(self.FPS)
 
     def run(self):
+        self.my_game.music()
         while self.running:
             self.handle_events()
             self.handle_input()

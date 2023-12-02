@@ -26,6 +26,8 @@ class PirateBattle:
         self.theta2 = 0
         self.shots_fired = 0
         self.sshots_fired = 0
+        self.my_ship_life = 100
+        self.your_ship_life = 100
 
         # init classes
         self.your_ship = Ship(self.screen, self.theta2, self.velocity2, 'pirate_pack/ships/ship (3).png')
@@ -122,15 +124,21 @@ class PirateBattle:
         self.your_ship.update(self.velocity2, self.theta2, self.your_ship, self.ball_group)
         self.your_ship.draw(self.screen)
 
+        #update score
+        self.my_game.display_score2(self.screen, self.my_ship_life, self.your_ship_life)
+
+
     def check_collisions(self):
         # Kill cannonball sprites after first contact.
         collisions = pygame.sprite.spritecollide(self.my_ship, self.your_ball_group, True)
         for i in collisions:
             i.kill()
+            self.my_ship_life -= 3
 
         collisions2 = pygame.sprite.spritecollide(self.your_ship, self.ball_group, True)
         for i in collisions2:
             i.kill()
+            self.your_ship_life -= 3
 
     def fire_cannon(self, angle):
         kill_theta = self.theta1 + angle

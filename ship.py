@@ -2,6 +2,7 @@ import random
 # from ship_looks import update_looks
 import pygame
 from math import sin, cos, pi
+
 class Ship(pygame.sprite.Sprite):
     def __init__(self,screen, theta, velocity, path):
         super().__init__()
@@ -106,9 +107,9 @@ class Ship(pygame.sprite.Sprite):
             elif self.life <= 0:
                 self.image = pygame.image.load('pirate_pack/ships/ship (23).png')
         elif self.path == 'pirate_pack/ships/ship (3).png':
-            if 100 >= self.life > 60:
+            if 100 >= self.life > 50:
                 self.image = pygame.image.load('pirate_pack/ships/ship (3).png')
-            elif 60 >= self.life > 30:
+            elif 50 >= self.life > 30:
                 self.image = pygame.image.load('pirate_pack/ships/ship (9).png')
             elif 30 >= self.life > 1:
                 self.image = pygame.image.load('pirate_pack/ships/ship (15).png')
