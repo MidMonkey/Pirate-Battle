@@ -58,26 +58,24 @@ class Npc(Ship):
             raw_attack_angle = (raw_attack_angle + 2 * pi) % (2 * pi)
             attack_angle = raw_attack_angle * rad_deg
             kill_theta = self.theta - 48.5  # kill theta is in degrees
-            kill_theta1 = kill_theta - 69.5
-            kill_theta2 = kill_theta + 69.5
-            print(kill_theta1, kill_theta2, attack_angle)
+            kill_theta1 = kill_theta - 90
+            kill_theta2 = kill_theta + 90
             x3 = self.rect.centerx
             y3 = self.rect.centery
             self.gun_timer = pygame.time.get_ticks()
             # if pygame.time.get_ticks() - self.gun_timer >= 100:
             current_time = pygame.time.get_ticks()
             if current_time - self.last_attack_time >= self.attack_cooldown:
-                if abs(attack_angle - kill_theta1) <= 40:
-                    # If angle is between kill_theta1 +- 20 degrees, shoot at the exact angle the enemy ship makes
+                if abs(attack_angle - kill_theta1) <= 20:
+                    # If angle is kill_theta1 +- 20 degrees, shoot at the exact angle the enemy ship makes
                     ball_group.add(Cannonball(self.screen, x3, y3, -attack_angle))
-                    print("fire")
+                    # for some reason attack_angle needs to be reversed
                     self.my_game.cannon_boom()
                     self.last_attack_time = current_time
                     self.npc_ball_group.draw(self.screen)
                 elif abs(attack_angle - kill_theta2) <= 20:
-                    # If angle is between kill_theta1 +- 20 degrees, shoot at the exact angle the enemy ship makes
+                    # If angle is kill_theta2 +- 20 degrees, shoot at the exact angle the enemy ship makes
                     ball_group.add(Cannonball(self.screen, x3, y3, -attack_angle))
-                    print('fire')
                     self.my_game.cannon_boom()
                     self.last_attack_time = current_time
                     self.npc_ball_group.draw(self.screen)

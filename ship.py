@@ -1,5 +1,4 @@
 import random
-# from ship_looks import update_looks
 import pygame
 from math import sin, cos, pi
 

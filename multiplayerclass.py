@@ -3,7 +3,7 @@ import sys
 from ship import Ship
 from effect import Effects
 from cannonball import Cannonball
-from control import Controls
+
 
 class PirateBattle:
     def __init__(self):

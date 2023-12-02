@@ -4,7 +4,6 @@ from ship import Ship
 from effect import Effects
 from cannonball import Cannonball
 from npc import Npc
-from control import Controls
 
 class SinglePlayer:
     def __init__(self):
