@@ -47,38 +47,39 @@ class Npc(Ship):
         self.y = max(0, min(self.y, self.screenheight))
 
         self.rect.center = (self.x, self.y)
+
     def attack(self,sprite1, sprite2, ball_group):
-            coord1 = sprite1.rect.center
-            x1, y1 = coord1
-            coord2 = sprite2.rect.center
-            x2, y2 = coord2
-            distance = sqrt((x2-x1)**2+(y2-y1)**2)
-            rad_deg = 180/pi
-            raw_attack_angle = atan2(y2 - y1, x2 - x1)
-            raw_attack_angle = (raw_attack_angle + 2 * pi) % (2 * pi)
-            attack_angle = raw_attack_angle * rad_deg
-            kill_theta = self.theta - 48.5  # kill theta is in degrees
-            kill_theta1 = kill_theta - 90
-            kill_theta2 = kill_theta + 90
-            x3 = self.rect.centerx
-            y3 = self.rect.centery
-            self.gun_timer = pygame.time.get_ticks()
-            # if pygame.time.get_ticks() - self.gun_timer >= 100:
-            current_time = pygame.time.get_ticks()
-            if current_time - self.last_attack_time >= self.attack_cooldown:
-                if abs(attack_angle - kill_theta1) <= 20:
-                    # If angle is kill_theta1 +- 20 degrees, shoot at the exact angle the enemy ship makes
-                    ball_group.add(Cannonball(self.screen, x3, y3, -attack_angle))
-                    # for some reason attack_angle needs to be reversed
-                    self.my_game.cannon_boom()
-                    self.last_attack_time = current_time
-                    self.npc_ball_group.draw(self.screen)
-                elif abs(attack_angle - kill_theta2) <= 20:
-                    # If angle is kill_theta2 +- 20 degrees, shoot at the exact angle the enemy ship makes
-                    ball_group.add(Cannonball(self.screen, x3, y3, -attack_angle))
-                    self.my_game.cannon_boom()
-                    self.last_attack_time = current_time
-                    self.npc_ball_group.draw(self.screen)
+        coord1 = sprite1.rect.center
+        x1, y1 = coord1
+        coord2 = sprite2.rect.center
+        x2, y2 = coord2
+        distance = sqrt((x2-x1)**2+(y2-y1)**2)
+        rad_deg = 180/pi
+        raw_attack_angle = atan2(y2 - y1, x2 - x1)
+        raw_attack_angle = (raw_attack_angle + 2 * pi) % (2 * pi)
+        attack_angle = raw_attack_angle * rad_deg
+        kill_theta = self.theta - 48.5  # kill theta is in degrees
+        kill_theta1 = kill_theta - 90
+        kill_theta2 = kill_theta + 90
+        x3 = self.rect.centerx
+        y3 = self.rect.centery
+        self.gun_timer = pygame.time.get_ticks()
+        # if pygame.time.get_ticks() - self.gun_timer >= 100:
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_attack_time >= self.attack_cooldown:
+            if abs(attack_angle - kill_theta1) <= 20:
+                # If angle is kill_theta1 +- 20 degrees, shoot at the exact angle the enemy ship makes
+                ball_group.add(Cannonball(self.screen, x3, y3, -attack_angle))
+                # for some reason attack_angle needs to be reversed
+                self.my_game.cannon_boom()
+                self.last_attack_time = current_time
+                self.npc_ball_group.draw(self.screen)
+            elif abs(attack_angle - kill_theta2) <= 20:
+                # If angle is kill_theta2 +- 20 degrees, shoot at the exact angle the enemy ship makes
+                ball_group.add(Cannonball(self.screen, x3, y3, -attack_angle))
+                self.my_game.cannon_boom()
+                self.last_attack_time = current_time
+                self.npc_ball_group.draw(self.screen)
 
 
     def npc_update_looks(self, velocity, theta):
@@ -91,8 +92,11 @@ class Npc(Ship):
         elif self.life <= 0:
             self.image = pygame.image.load('pirate_pack/ships/ship (22).png')
 
+
         # Scale and rotate the image
         self.og_image = pygame.transform.scale(self.image, (40, 80))
         self.og_image = pygame.transform.rotate(self.og_image, 40)
         # Update the ship
         self.ship_update(2, self.theta)
+        if self.life == 0:
+            self.kill()
