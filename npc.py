@@ -98,5 +98,4 @@ class Npc(Ship):
         self.og_image = pygame.transform.rotate(self.og_image, 40)
         # Update the ship
         self.ship_update(2, self.theta)
-        if self.life == 0:
-            self.kill()
+

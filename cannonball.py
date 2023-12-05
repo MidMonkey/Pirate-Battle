@@ -38,8 +38,5 @@ class Cannonball(pygame.sprite.Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect.center)
-    def check_hits(self, target):
-        ball_list = pygame.sprite.spritecollide(self.target, self, 1, 1)
-        for h in hit_ship_list:
-            self.kill(h)
+
 

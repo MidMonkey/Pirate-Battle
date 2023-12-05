@@ -103,8 +103,9 @@ class Ship(pygame.sprite.Sprite):
                 self.image = pygame.image.load('pirate_pack/ships/ship (11).png')
             elif 30 >= self.life > 1:
                 self.image = pygame.image.load('pirate_pack/ships/ship (17).png')
-            elif self.life <= 0:
+            elif self.life <= 1:
                 self.image = pygame.image.load('pirate_pack/ships/ship (23).png')
+
         elif self.path == 'pirate_pack/ships/ship (3).png':
             if 100 >= self.life > 50:
                 self.image = pygame.image.load('pirate_pack/ships/ship (3).png')
@@ -112,8 +113,9 @@ class Ship(pygame.sprite.Sprite):
                 self.image = pygame.image.load('pirate_pack/ships/ship (9).png')
             elif 30 >= self.life > 1:
                 self.image = pygame.image.load('pirate_pack/ships/ship (15).png')
-            elif self.life <= 0:
+            elif self.life <= 1:
                 self.image = pygame.image.load('pirate_pack/ships/ship (21).png')
+
 
         # Scale and rotate the image
         self.og_image = pygame.transform.scale(self.image, (40, 80))
